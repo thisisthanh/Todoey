@@ -34,7 +34,11 @@ class TodoListViewController: UITableViewController {
     //MARK - TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
+        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .none
+        } else {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        }
         
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -43,14 +47,19 @@ class TodoListViewController: UITableViewController {
     
     @IBAction func addButtonPressed(_ sender: Any) {
         
-        let alert = UIAlertController(title: "Add New Item", message: nil, preferredStyle: .alert)
+        var textFied = UITextField()
         
-        let action = UIAlertAction(title: "OK", style: .default) { (action) in
+        
+        let alert = UIAlertController(title: "Add New Todoey Item", message: nil, preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            
+            self.itemArray.append(textFied.text!)
             self.tableView.reloadData()
         }
-        alert.addTextField { (textField) in
-            let newItem = textField.text!
-            self.itemArray.append(newItem)
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create New Item"
+            textFied = alertTextField
             
         }
         
